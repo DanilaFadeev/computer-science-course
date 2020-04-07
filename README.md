@@ -1,3 +1,12 @@
+# Table of contents
+
+1. [Introduction to Algorithms](#introduction-to-algorithms)
+2. [Grokking Algorithms](#grokking-algorithms)
+3. [Practice Python](#practice-python)
+4. [Other materials](#other-materials)
+
+<a name="introduction-to-algorithms"></a>
+
 ## Introduction to Algorithms
 ####	Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein
 
@@ -6,8 +15,8 @@
 #### Table of contents
 
  - [ ] I Foundations
-    - [ ] 1 The Role of Algorithms in Computing
-    - [ ] 2 Getting Started
+    - [X] 1 The Role of Algorithms in Computing
+    - [X] 2 Getting Started
     - [ ] 3 Growth of Functions
     - [ ] 4 Divide-and-Conquer
     - [ ] 5 Probabilistic Analysis and Randomized Algorithms
@@ -59,6 +68,7 @@
     - [ ] C Counting and Probability
     - [ ] D Matrices
 
+<a name="grokking-algorithms"></a>
 
 ## Grokking Algorithms
 #### Aditya Y. Bhargava
@@ -88,6 +98,8 @@
   - [X] Chapter 10. K-nearest neighbors
 
   - [X] Chapter 11. Where to go next
+
+<a name="practice-python"></a>  
 
 ## Practice Python
 
@@ -120,3 +132,11 @@
 - [ ] [File Overlap](https://www.practicepython.org/exercise/2014/12/14/23-file-overlap.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [Draw A Game Board](https://www.practicepython.org/exercise/2014/12/27/24-draw-a-game-board.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [Guessing Game Two](https://www.practicepython.org/exercise/2015/11/01/25-guessing-game-two.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
+
+<a name="other-materials"></a>
+
+## Other materials
+
+- [ ] [C++ Essential Training](https://www.lynda.com/C-tutorials/C-Essential-Training/772322-2.html) (Video course)
+
+  Learn C++ programming, starting with the basics. Widely used for both systems and applications development, C++ is available for virtually every operating system and has influenced and informed many derivative languages, including C# and Java. In this course, Bill Weinman guides you through the nuts and bolts of this essential language.
