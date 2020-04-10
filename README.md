@@ -140,3 +140,9 @@
 - [ ] [C++ Essential Training](https://www.lynda.com/C-tutorials/C-Essential-Training/772322-2.html) (Video course)
 
   Learn C++ programming, starting with the basics. Widely used for both systems and applications development, C++ is available for virtually every operating system and has influenced and informed many derivative languages, including C# and Java. In this course, Bill Weinman guides you through the nuts and bolts of this essential language.
+
+<br>
+
+- [ ] [The C Programming Language](https://www.amazon.com/Programming-Language-2nd-Brian-Kernighan/dp/0131103628) (Book)
+  The C Programming Language (sometimes termed K&R, after its authors' initials) is a computer programming book written by Brian Kernighan and Dennis Ritchie, the latter of whom originally designed and implemented the language, as well as co-designed the Unix operating system with which development of the language was closely intertwined.
+![](https://pbs.twimg.com/profile_images/3388137225/0100cab748a16b65f3c85d16ad7eaf50.jpeg)
