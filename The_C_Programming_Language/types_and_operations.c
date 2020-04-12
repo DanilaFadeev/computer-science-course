@@ -1,5 +1,19 @@
 #include <stdio.h>
 #include <limits.h>
+#include <math.h>
+
+#define MAX_LENGTH 100
+
+int isLeapYear(int year) {
+  return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 1 : 0;
+}
+
+char lower(char s) {
+  if (s >= 'A' && s <= 'Z') {
+    return s + ('a' - 'A');
+  }
+  return s;
+}
 
 int main() {
   // char
@@ -31,6 +45,35 @@ int main() {
 
   int sys8 = 0x23;
   int sys16 = 0X23A3B;
+
+  enum boolean { NO, YES };
+  enum escapes {
+    BELL = '\a',
+    BACKSPACE = '\b',
+    TAB = '\t',
+    NEWLINE = '\n',
+    VTAB = '\v'
+  };
+
+  printf("Is leap year?\n1999 - %d\n2000 - %d\n2001 - %d\n", isLeapYear(1999), isLeapYear(2000), isLeapYear(2001));
+
+  printf("lower('G'): %c\n", lower('g'));
+
+  printf("Type conversion - sqrt(25): %d\n", (int) sqrt(25));
+
+  // read line with for
+  char string[MAX_LENGTH], ch;
+
+  printf("Input the line 1:\n");
+  for (int i = 0; i < MAX_LENGTH - 1 && (ch = getchar()) != '\n' && ch != EOF; i++) {
+    string[i] = ch;
+  }
+
+  // analog without "&&" and "||"
+  printf("Input the line 2:\n");
+  for (int i = 0; (i < MAX_LENGTH - 1) + ((ch = getchar()) != '\n') + (ch != EOF) == 3; i++) {
+    string[i] = ch;
+  }
 
   return 0;
 }
