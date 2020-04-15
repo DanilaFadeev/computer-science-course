@@ -11,5 +11,9 @@ int main() {
 
   printf("%d\n", flags & mask); // 100 (4)
 
+  unsigned char sample1 = 16; // 10000
+  sample1 |= (1 << 3); // change only one bit (10100) - 24
+  printf("%d\n", sample1);
+
   return 0;
 }
