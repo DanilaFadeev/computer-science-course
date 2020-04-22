@@ -13,7 +13,7 @@ function clean() {
 trap clean SIGINT
 
 # compile
-cc -o $file -w $file.c
+cc -o $file -w $file.c ./libs/*.c
 
 # run
 ./$file

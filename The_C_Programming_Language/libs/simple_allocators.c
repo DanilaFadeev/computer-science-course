@@ -18,7 +18,3 @@ void afree(char* p) {
     allocp = p;
   }
 }
-
-int main() {
-  return 0;
-}
