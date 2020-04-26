@@ -15,8 +15,11 @@ trap clean SIGINT
 # compile
 cc -o $file -w $file.c ./libs/*.c
 
-# run
-./$file
+# remove first argument (filename)
+shift
+
+# run with rest of argument
+./$file $@
 
 # clear after finish exicution
 clean
