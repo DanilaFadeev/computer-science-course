@@ -42,17 +42,18 @@ struct key {
 
 #define NKEYS (sizeof keytab / sizeof(struct key))
 
-int binsearch(char *, struct key *, int n);
+struct key *binsearch(char *, struct key *, int n);
 
 int main(int argc, char* argv[]) {
   char *found_words[] = {"do", "while", "for", "sizeof", "sizeof", "const",
    "return", "int", "short", "do", "while", "return", "switch",  0};
 
-  int found_index;
   char **pt = found_words;
+  struct key *found;
+  
   while(*pt != 0) {
-    if ((found_index = binsearch(*pt, keytab, NKEYS)) >= 0) {
-      keytab[found_index].count++;
+    if ((found = binsearch(*pt, keytab, NKEYS)) != NULL) {
+      found->count++;
     }
     *pt++;
   }
@@ -65,19 +66,25 @@ int main(int argc, char* argv[]) {
 }
 
 /* use binary search to find a word mapping index on the keywords table */
-int binsearch(char *word, struct key keytab[], int n) {
-  int start = 0, end = n, middle, compare_result;
+struct key *binsearch(char *word, struct key *keytab, int n) {
+  struct key *start = keytab;
+  struct key *end = &keytab[n];
+  struct key *middle;
+
+  int compare_result;
 
   do {
-    middle = floor((double)(start + end) / 2);
-    compare_result = strcmp(keytab[middle].word, word);
+    middle = start + (end - start) / 2;
+    compare_result = strcmp(middle->word, word);
 
-    if (compare_result > 0) {
+    if (compare_result == 0) {
+      return middle;
+    } else if (compare_result > 0) {
       end = middle;
     } else {
       start = middle + 1;
     }
-  } while (start < end && compare_result != 0);
+  } while (start < end);
 
-  return compare_result == 0 ? middle : -1;
+  return NULL;
 }
