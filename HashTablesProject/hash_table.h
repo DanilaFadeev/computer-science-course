@@ -6,13 +6,20 @@ typedef struct {
 
 // hash table
 typedef struct {
+  /* max items capacity */
   int size;
+
+  int base_size;
+
+  /* the total count of existing items */
   int count;
+
+  /* array of items */
   ht_item** items;
 } ht_hash_table;
 
 
-void ht_insert(ht_hash_table* ht, const char* key, const char* value);
+void ht_upsert(ht_hash_table* ht, const char* key, const char* value);
 
 char* ht_search(ht_hash_table* ht, const char* key);
 
