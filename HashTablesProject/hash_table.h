@@ -18,12 +18,14 @@ typedef struct {
   ht_item** items;
 } ht_hash_table;
 
+typedef int (*GetHashFn)(const char* key, const int buckets_num, const int attempts);
+
 ht_hash_table* ht_new();
 
 ht_hash_table* ht_new_sized(const int base_size);
 
-void ht_upsert(ht_hash_table* ht, const char* key, const char* value);
+void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const char* value);
 
-char* ht_search(ht_hash_table* ht, const char* key);
+char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key);
 
-void ht_delete(ht_hash_table* h, const char* key);
+void ht_delete(ht_hash_table* h, GetHashFn get_hash, const char* key);

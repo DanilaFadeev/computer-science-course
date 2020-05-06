@@ -8,8 +8,6 @@
 
 #define HASH_TABLE_SIZE 53
 #define HT_INITIAL_BASE_SIZE 73
-#define HT_PRIME_1 73
-#define HT_PRIME_2 175
 
 #define UP_LOAD_LIMIT 70
 #define DOWN_LOAD_LIMIT 10
@@ -49,7 +47,7 @@ static void ht_clear_hash_table(ht_hash_table* hash_table) {
   move current existing items there and swap them in the end.
   Old hash table will be deleted from memory.
 */
-static void ht_resize(ht_hash_table *hash_table, const int base_size) {
+static void ht_resize(ht_hash_table *hash_table, GetHashFn get_hash, const int base_size) {
   if (base_size < HT_INITIAL_BASE_SIZE) {
     return;
   }
@@ -61,7 +59,7 @@ static void ht_resize(ht_hash_table *hash_table, const int base_size) {
   for (int i = 0; i < hash_table->size; i++) {
     ht_item *item = hash_table->items[i];
     if (item != NULL && item != &HT_DELETED_ITEM) {
-      ht_upsert(new_hash_table, item->key, item->value);
+      ht_upsert(new_hash_table, get_hash, item->key, item->value);
     }
   }
 
@@ -81,33 +79,14 @@ static void ht_resize(ht_hash_table *hash_table, const int base_size) {
   ht_clear_hash_table(new_hash_table);
 }
 
-static void ht_resize_up(ht_hash_table* hash_table) {
+static void ht_resize_up(ht_hash_table* hash_table, GetHashFn get_hash) {
   const int new_size = hash_table->base_size * 2;
-  return ht_resize(hash_table, new_size);
+  return ht_resize(hash_table, get_hash, new_size);
 }
 
-void ht_resize_down(ht_hash_table* hash_table) {
+void ht_resize_down(ht_hash_table* hash_table, GetHashFn get_hash) {
   const int new_size = hash_table->base_size / 2;
-  return ht_resize(hash_table, new_size);
-}
-
-// hash function
-static int ht_hash(const char* str, const int a, const int m) {
-  long hash = 0;
-  const int str_length = strlen(str);
-  for (int i = 0; i < str_length; i++) {
-    hash += (long) pow(a, str_length - (i + 1)) * str[i];
-    hash %= m;
-  }
-  return hash;
-}
-
-// double hashing method
-static int ht_get_hash(const char* s, const int num_buckets, const int attempt)  {
-  const int hash_a = ht_hash(s, HT_PRIME_1, num_buckets);
-  const int hash_b = ht_hash(s, HT_PRIME_2, num_buckets);
-
-  return (hash_a + (attempt * (hash_b + 1))) % num_buckets;
+  return ht_resize(hash_table, get_hash, new_size);
 }
 
 /*
@@ -137,9 +116,9 @@ ht_hash_table* ht_new_sized(const int base_size) {
   Insert new item into hash table, or update pair value,
   if item with current key already exists
 */
-void ht_upsert(ht_hash_table* ht, const char* key, const char* value) {
+void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const char* value) {
   ht_item* item = ht_new_item(key, value);
-  int index = ht_get_hash(item->key, ht->size, 0);
+  int index = get_hash(item->key, ht->size, 0);
 
   ht_item* current_item = ht->items[index];
   int attempt = 1;
@@ -154,7 +133,7 @@ void ht_upsert(ht_hash_table* ht, const char* key, const char* value) {
       }
     }
 
-    index = ht_get_hash(item->key, ht->size, attempt++);
+    index = get_hash(item->key, ht->size, attempt++);
     current_item = ht->items[index];
   }
 
@@ -164,15 +143,15 @@ void ht_upsert(ht_hash_table* ht, const char* key, const char* value) {
   // check and resize hash table if necessary
   const int hash_table_load = ht->count * 100 / ht->size;
   if (hash_table_load > UP_LOAD_LIMIT) {
-    ht_resize_up(ht);
+    ht_resize_up(ht, get_hash);
   }
 }
 
 /*
   Search string value by key in a hash table
 */
-char* ht_search(ht_hash_table* ht, const char* key) {
-  int index = ht_get_hash(key, ht->size, 0);
+char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
+  int index = get_hash(key, ht->size, 0);
   ht_item* item = ht->items[index];
 
   int attempt = 1;
@@ -183,7 +162,7 @@ char* ht_search(ht_hash_table* ht, const char* key) {
       }
     }
    
-    index = ht_get_hash(key, ht->size, attempt++);
+    index = get_hash(key, ht->size, attempt++);
     item = ht->items[index];
   } 
 
@@ -193,9 +172,9 @@ char* ht_search(ht_hash_table* ht, const char* key) {
 /*
   Mark item as deleted and clean used memory for that
 */
-void ht_delete(ht_hash_table* ht, const char* key) {
+void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
   short is_item_deleted = false; 
-  int index = ht_get_hash(key, ht->size, 0);
+  int index = get_hash(key, ht->size, 0);
   ht_item* item = ht->items[index];
 
   int attempt = 1;
@@ -207,7 +186,7 @@ void ht_delete(ht_hash_table* ht, const char* key) {
         is_item_deleted = true;
       }
     }
-    index = ht_get_hash(key, ht->size, attempt++);
+    index = get_hash(key, ht->size, attempt++);
     item = ht->items[index];
   }
 
@@ -218,6 +197,6 @@ void ht_delete(ht_hash_table* ht, const char* key) {
   // check and resize table if necessary
   const int hash_table_load = ht->size * 100 / ht->count;
   if (hash_table_load < DOWN_LOAD_LIMIT) {
-    ht_resize_down(ht);
+    ht_resize_down(ht, get_hash);
   }
 }
