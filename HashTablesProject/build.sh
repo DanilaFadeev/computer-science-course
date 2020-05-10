@@ -8,8 +8,12 @@ if [ -f main ] ; then
 # Build new version
 cc hash_table.c\
   prime.c\
+  hashing_methods.c\
+  cli.c\
   main.c\
   -o main
+
+printf "Build succeed.\n\n"
 
 # Run build
 ./main

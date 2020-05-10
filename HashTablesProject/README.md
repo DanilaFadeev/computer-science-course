@@ -21,6 +21,6 @@ In many situations, hash tables turn out to be on average more efficient than se
 - [X] Implement the base hash table structure
 - [ ] Add sample file
 - [ ] Create command line interface for work with hash tables
-- [ ] Add Linear probing way to handle collisions
-- [ ] Add Quadratic probing way to handle collisions
-- [ ] Load amount of items from the file
+- [X] Add Linear probing way to handle collisions
+- [X] Add Quadratic probing way to handle collisions
+- [X] Load amount of items from the file
