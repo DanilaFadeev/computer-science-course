@@ -24,3 +24,8 @@ In many situations, hash tables turn out to be on average more efficient than se
 - [X] Add Linear probing way to handle collisions
 - [X] Add Quadratic probing way to handle collisions
 - [X] Load amount of items from the file
+- [ ] Add debug for all the operations
+- [ ] Add pretty header
+- [ ] Option input value validation
+- [ ] Possibility to select and change hash method
+- [ ] CLI prettier
