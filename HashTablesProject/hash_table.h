@@ -26,6 +26,6 @@ ht_hash_table* ht_new_sized(const int base_size);
 
 void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const char* value, ...);
 
-char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key);
+char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...);
 
-void ht_delete(ht_hash_table* h, GetHashFn get_hash, const char* key);
+void ht_delete(ht_hash_table* h, GetHashFn get_hash, const char* key, ...);

@@ -120,15 +120,10 @@ ht_hash_table* ht_new_sized(const int base_size) {
 void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const char* value, ...) {
   // START check for debug option
   va_list ap;
-  va_start(ap, value);
-
+  va_start(ap, key);
   unsigned short isDebug = false;
-  short debugParameter = va_arg(ap, short);
-
-  if (debugParameter == true) {
-    isDebug = true;
-  }
-
+  unsigned short debugParameter = va_arg(ap, short);
+  if (debugParameter == true) isDebug = true;
   va_end(ap);
   // END check for debug option
 
@@ -186,9 +181,22 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
 /*
   Search string value by key in a hash table
 */
-char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
+char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
+  // START check for debug option
+  va_list ap;
+  va_start(ap, key);
+  unsigned short isDebug = false;
+  unsigned short debugParameter = va_arg(ap, short);
+  if (debugParameter == true) isDebug = true;
+  va_end(ap);
+  // END check for debug option
+
   int index = get_hash(key, ht->size, 0);
   ht_item* item = ht->items[index];
+
+  if (isDebug) {
+    printf("Generated index: %d\n", index);
+  }
 
   int attempt = 1;
   while (item != NULL) {
@@ -200,6 +208,10 @@ char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
    
     index = get_hash(key, ht->size, attempt++);
     item = ht->items[index];
+
+    if (isDebug) {
+      printf("Attempt: %d. Item index already used! Generated a new one - %d\n", attempt, index);
+    }
   } 
 
   return NULL;
@@ -208,10 +220,23 @@ char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
 /*
   Mark item as deleted and clean used memory for that
 */
-void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
+void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
+   // START check for debug option
+  va_list ap;
+  va_start(ap, key);
+  unsigned short isDebug = false;
+  unsigned short debugParameter = va_arg(ap, short);
+  if (debugParameter == true) isDebug = true;
+  va_end(ap);
+  // END check for debug option
+
   short is_item_deleted = false; 
   int index = get_hash(key, ht->size, 0);
   ht_item* item = ht->items[index];
+
+   if (isDebug) {
+    printf("Generated index: %d\n", index);
+  }
 
   int attempt = 1;
   while (item != NULL) {
@@ -224,6 +249,10 @@ void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
     }
     index = get_hash(key, ht->size, attempt++);
     item = ht->items[index];
+
+    if (isDebug) {
+      printf("Attempt: %d. Item index already used! Generated a new one - %d\n", attempt, index);
+    }
   }
 
   if (is_item_deleted) {
@@ -234,5 +263,9 @@ void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key) {
   const int hash_table_load = ht->size * 100 / ht->count;
   if (hash_table_load < DOWN_LOAD_LIMIT) {
     ht_resize_down(ht, get_hash);
+
+    if (isDebug) {
+      printf("Hash table load is %d (limit - %d). Resize up hash table\n", hash_table_load, DOWN_LOAD_LIMIT);
+    }
   }
 }

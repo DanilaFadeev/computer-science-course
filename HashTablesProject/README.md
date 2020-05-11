@@ -19,13 +19,14 @@ In many situations, hash tables turn out to be on average more efficient than se
 ## To do
 
 - [X] Implement the base hash table structure
-- [ ] Add sample file
-- [ ] Create command line interface for work with hash tables
+- [X] Create command line interface for work with hash tables
 - [X] Add Linear probing way to handle collisions
 - [X] Add Quadratic probing way to handle collisions
 - [X] Load amount of items from the file
-- [ ] Add debug for all the operations
-- [ ] Add pretty header
+- [X] Add debug for all the operations
+- [X] Add pretty header
+- [ ] Add sample file
+- [ ] Readme pretty
 - [ ] Option input value validation
-- [ ] Possibility to select and change hash method
-- [ ] CLI prettier
+- [ ] Possibility to select and change hash method (make it global)
+- [X] CLI prettier
