@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "utils.h"
 #include "hash_table.h"
@@ -144,11 +146,25 @@ static void update_screen() {
 
 // ask user for operation number input
 static unsigned short get_operation() {
-  short selected_operation; 
-  printf("\nYour choice: ");
-  scanf("%hd", &selected_operation);
+  char str_input[20];
+  unsigned short isFailed = false;
 
-  return selected_operation;
+  do {
+    // show the error if failed on the previous iteration
+    if (isFailed) { 
+      colorise_red();
+      printf("\nError: Incorrect input! Please, enter a single number from 1 to 6.");
+      colorise_reset();
+    }
+
+    printf("\nYour choice (1-6): ");
+    scanf("%s", &str_input);
+    update_screen();
+
+    isFailed = true;
+  } while (strlen(str_input) != 1 || !isdigit(str_input[0]));
+
+  return str_input[0] - '0';
 }
 
 /* main operation to start endless loop with main menu options */
@@ -205,7 +221,9 @@ void run_program_loop() {
         colorise_reset();
         return;
       default:
-        printf("Unknown operation!");
+        colorise_yellow();
+        printf("Unknown operation!\n");
+        colorise_reset();
         break;
       }
   }
