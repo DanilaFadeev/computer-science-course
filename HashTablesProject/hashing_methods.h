@@ -1,4 +1,4 @@
-// double hashing method
+// Double hashing method
 int ht_get_double_hash(const char* s, const int num_buckets, const int attempt);
 
 // Linear probing method

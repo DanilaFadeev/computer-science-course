@@ -28,5 +28,6 @@ In many situations, hash tables turn out to be on average more efficient than se
 - [ ] Add sample file
 - [ ] Readme pretty
 - [X] Option input value validation
-- [ ] Possibility to select and change hash method (make it global)
+- [X] Possibility to select and change hash method (make it global)
 - [X] CLI prettier
+- [X] Add status bar

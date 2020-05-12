@@ -31,7 +31,7 @@ static void ht_clear_item(ht_item* item) {
   free(item);
 }
 
-static void ht_clear_hash_table(ht_hash_table* hash_table) {
+void ht_clear_hash_table(ht_hash_table* hash_table) {
   for (int i = 0; i < hash_table->size; i++) {
     ht_item* item = hash_table->items[i];
     if (item != NULL) {

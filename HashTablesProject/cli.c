@@ -26,6 +26,7 @@ enum OPERATIONS {
   DELETE_ITEM,
   SWITCH_DEBUG,
   LOAD_DATA,
+  CHANGE_METHOD,
   EXIT
 };
 
@@ -39,8 +40,12 @@ char* s(int number) {
 // global debug mode flag
 static unsigned int is_debug_mode_enabled = false;
 
+// define global hash table and hashing method
+GetHashFn get_hash;
+ht_hash_table* hash_table;
+
 // ADD_ITEM
-static void add_item(ht_hash_table *hash_table, GetHashFn get_hash) {
+static void add_item() {
   char key[100], value[100];
 
   printf("Item key: ");
@@ -53,7 +58,7 @@ static void add_item(ht_hash_table *hash_table, GetHashFn get_hash) {
 }
 
 // SEARCH_ITEM
-static void search_item(ht_hash_table *hash_table, GetHashFn get_hash) {
+static void search_item() {
   char key[100], *found;
 
   printf("Item searching key: ");
@@ -70,7 +75,7 @@ static void search_item(ht_hash_table *hash_table, GetHashFn get_hash) {
 }
 
 // DELETE_ITEM
-static void delete_item(ht_hash_table *hash_table, GetHashFn get_hash) {
+static void delete_item() {
   char key[100];
 
   printf("Item key to remove: ");
@@ -85,7 +90,7 @@ static void switch_debug_mode() {
 }
 
 // LOAD_DATA
-static void read_file_data(ht_hash_table* hash_table, GetHashFn get_hash) {
+static void read_file_data() {
   char *filename = "data.txt";
   FILE *fp;
 
@@ -104,6 +109,32 @@ static void read_file_data(ht_hash_table* hash_table, GetHashFn get_hash) {
   fclose(fp);
 }
 
+// CHANGE_METHOD
+static void change_method() {
+  char input_str[20], selected_method[20];
+
+  do {
+    printf("1. Linear\n2. Quadratic\n3. Double\n");
+    scanf("%s", &input_str);
+  } while (strlen(input_str) != 1 || !isdigit(input_str[0])
+    || (input_str[0] - '0') < 1 || (input_str[0] - '0') > 3);
+
+  switch (input_str[0] - '0') {
+    case 1:
+      get_hash = ht_get_linear_hash;
+      strcpy(selected_method, "Linear");
+    case 2:
+      get_hash = ht_get_quadratic_hash;
+      strcpy(selected_method, "Quadratic");
+    case 3:
+      get_hash = ht_get_double_hash;    
+      strcpy(selected_method, "Double");
+  }
+
+  ht_clear_hash_table(hash_table);
+  hash_table = ht_new();
+}
+
 // program header display
 static void print_header() {
   printf("\u250f");
@@ -118,13 +149,28 @@ static void print_header() {
   printf("\u2517");
   for (int i = 0; i < 50; i++)
     printf("\u2501");
-  printf("\u251b\n\n");
+  printf("\u251b\n");
+}
+
+static void print_status_bar() {
+  char current_hash_method[20] = "Linear";
+  if (get_hash == ht_get_quadratic_hash) {
+    strcpy(current_hash_method, "Quadratic");
+  } else if (get_hash == ht_get_double_hash) {
+     strcpy(current_hash_method, "Double");
+  }
+
+  printf("| Hash Table -");
+  printf(" Size:\033[0;31m %d \033[0m,", hash_table->size);
+  printf(" Items:\033[0;32m %d \033[0m,", hash_table->count);
+  printf(" Load:\033[0;34m %d%% \033[0m", (hash_table->count * 100) / hash_table->size);
+  printf(" | Hash probing method:\033[0;33m %s \033[0m|\n\n", current_hash_method);
 }
 
 // program main menu display with option selection
 static void display_menu() {
   colorise_blue();
-  printf("\u261E SELECT THE OPERATION (1-6):\n");
+  printf("\u261E SELECT THE OPERATION (1-7):\n");
 
   colorise_green();
   printf("\
@@ -133,14 +179,17 @@ static void display_menu() {
   \u2462  Delete an item by key\n\
   \u2463  %s debug mode\n\
   \u2464  Load data from file\n\
-  \u2465  Exit\n", is_debug_mode_enabled ? "Disable" : "Enable");
+  \u2465  Change hash probing method\n\
+  \u2466  Exit\n", is_debug_mode_enabled ? "Disable" : "Enable");
   colorise_reset();
 }
 
 // re-draw program screen with header and menu
 static void update_screen() {
   clrscr();
+
   print_header();
+  print_status_bar();
   display_menu();
 }
 
@@ -157,7 +206,7 @@ static unsigned short get_operation() {
       colorise_reset();
     }
 
-    printf("\nYour choice (1-6): ");
+    printf("\nYour choice (1-7): ");
     scanf("%s", &str_input);
     update_screen();
 
@@ -169,10 +218,10 @@ static unsigned short get_operation() {
 
 /* main operation to start endless loop with main menu options */
 void run_program_loop() {
-  unsigned short selected_operation; 
+  unsigned short selected_operation;
 
-  GetHashFn get_hash = ht_get_linear_hash;
-  ht_hash_table* hash_table = ht_new();
+  get_hash = ht_get_linear_hash;
+  hash_table = ht_new();
 
   update_screen();
 
@@ -189,19 +238,19 @@ void run_program_loop() {
         colorise_yellow();
         printf("Adding new item to hash table\n");
         colorise_reset();
-        add_item(hash_table, get_hash);
+        add_item();
         break;
       case SEARCH_ITEM:
         colorise_yellow();
         printf("Searching an item on the hash table:\n");
         colorise_reset();
-        search_item(hash_table, get_hash);
+        search_item();
         break;
       case DELETE_ITEM:
         colorise_yellow();
         printf("Delete an item from the hash table:\n");
         colorise_reset();
-        delete_item(hash_table, get_hash);
+        delete_item();
         break;
       case SWITCH_DEBUG:
         switch_debug_mode();
@@ -213,8 +262,14 @@ void run_program_loop() {
         colorise_yellow();
         printf("Loading some hash table from the data file:\n");
         colorise_reset();
-        read_file_data(hash_table, get_hash);
-        break;  
+        read_file_data();
+        break;
+      case CHANGE_METHOD:
+        colorise_yellow();
+        printf("Change base hash probing method (hash table will be recreated):\n");
+        colorise_reset();
+        change_method();
+        break;
       case EXIT:
         colorise_yellow();
         printf("Thanks for playing! Have a nice time!\n");
