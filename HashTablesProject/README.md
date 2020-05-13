@@ -25,9 +25,14 @@ In many situations, hash tables turn out to be on average more efficient than se
 - [X] Load amount of items from the file
 - [X] Add debug for all the operations
 - [X] Add pretty header
-- [ ] Add sample file
-- [ ] Readme pretty
 - [X] Option input value validation
 - [X] Possibility to select and change hash method (make it global)
 - [X] CLI prettier
 - [X] Add status bar
+- [X] Add boolean type ref
+- [X] Fix delete method
+- [X] Colorize with text in it
+- [X] Fix debug mode pass
+- [ ] Add sample file
+- [ ] Readme pretty
+- [X] Cleanup

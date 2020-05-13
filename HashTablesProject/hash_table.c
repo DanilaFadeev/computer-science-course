@@ -4,7 +4,6 @@
 #include <stdarg.h>
 
 #include "hash_table.h"
-#include "prime.h"
 #include "utils.h"
 
 #define HASH_TABLE_SIZE 53
@@ -121,8 +120,8 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
   // START check for debug option
   va_list ap;
   va_start(ap, key);
-  unsigned short isDebug = false;
-  unsigned short debugParameter = va_arg(ap, short);
+  Boolean isDebug = false;
+  Boolean debugParameter = va_arg(ap, short);
   if (debugParameter == true) isDebug = true;
   va_end(ap);
   // END check for debug option
@@ -134,6 +133,7 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
   int attempt = 1;
 
   if (isDebug) {
+    print_timestamp();
     printf("Generated index: %d\n", index);
   }
 
@@ -145,6 +145,7 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
         ht->items[index] = item;
 
         if (isDebug) {
+          print_timestamp();
           printf("Item with key '%s' already exists. Update value with '%s'\n", key, value);
         }
 
@@ -156,6 +157,7 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
     current_item = ht->items[index];
 
     if (isDebug) {
+      print_timestamp();
       printf("Attempt: %d. Item index already used! Generated a new one - %d\n", attempt, index);
     }
   }
@@ -164,6 +166,7 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
   ht->count++;
 
   if (isDebug) {
+    print_timestamp();
     printf("Item inserted into %d position\nCurrent hash table amount - %d items\n", index, ht->count);
   }
 
@@ -173,6 +176,7 @@ void ht_upsert(ht_hash_table* ht, GetHashFn get_hash, const char* key, const cha
     ht_resize_up(ht, get_hash);
 
     if (isDebug) {
+      print_timestamp();
       printf("Hash table load is %d (limit - %d). Resize up hash table\n", hash_table_load, UP_LOAD_LIMIT);
     }
   }
@@ -185,8 +189,8 @@ char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
   // START check for debug option
   va_list ap;
   va_start(ap, key);
-  unsigned short isDebug = false;
-  unsigned short debugParameter = va_arg(ap, short);
+  Boolean isDebug = false;
+  Boolean debugParameter = va_arg(ap, short);
   if (debugParameter == true) isDebug = true;
   va_end(ap);
   // END check for debug option
@@ -195,6 +199,7 @@ char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
   ht_item* item = ht->items[index];
 
   if (isDebug) {
+    print_timestamp();
     printf("Generated index: %d\n", index);
   }
 
@@ -210,6 +215,7 @@ char* ht_search(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
     item = ht->items[index];
 
     if (isDebug) {
+      print_timestamp();
       printf("Attempt: %d. Item index already used! Generated a new one - %d\n", attempt, index);
     }
   } 
@@ -224,17 +230,18 @@ void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
    // START check for debug option
   va_list ap;
   va_start(ap, key);
-  unsigned short isDebug = false;
-  unsigned short debugParameter = va_arg(ap, short);
+  Boolean isDebug = false;
+  Boolean debugParameter = va_arg(ap, short);
   if (debugParameter == true) isDebug = true;
   va_end(ap);
   // END check for debug option
 
-  short is_item_deleted = false; 
+  Boolean is_item_deleted = false; 
   int index = get_hash(key, ht->size, 0);
   ht_item* item = ht->items[index];
 
    if (isDebug) {
+    print_timestamp();
     printf("Generated index: %d\n", index);
   }
 
@@ -251,6 +258,7 @@ void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
     item = ht->items[index];
 
     if (isDebug) {
+      print_timestamp();
       printf("Attempt: %d. Item index already used! Generated a new one - %d\n", attempt, index);
     }
   }
@@ -260,11 +268,12 @@ void ht_delete(ht_hash_table* ht, GetHashFn get_hash, const char* key, ...) {
   }
 
   // check and resize table if necessary
-  const int hash_table_load = ht->size * 100 / ht->count;
+  const int hash_table_load = (ht->size * 100 / (ht->count || 1));
   if (hash_table_load < DOWN_LOAD_LIMIT) {
     ht_resize_down(ht, get_hash);
 
     if (isDebug) {
+      print_timestamp();
       printf("Hash table load is %d (limit - %d). Resize up hash table\n", hash_table_load, DOWN_LOAD_LIMIT);
     }
   }

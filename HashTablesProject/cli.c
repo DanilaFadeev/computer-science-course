@@ -13,13 +13,6 @@
 #define clrscr() printf("\e[1;1H\e[2J")
 #endif
 
-// functions to colorise input
-#define colorise_red() printf("\033[0;31m")
-#define colorise_green() printf("\033[0;32m")
-#define colorise_yellow() printf("\033[0;33m")
-#define colorise_blue() printf("\033[0;34m")
-#define colorise_reset() printf("\033[0m")
-
 enum OPERATIONS {
   ADD_ITEM = 1,
   SEARCH_ITEM,
@@ -38,7 +31,7 @@ char* s(int number) {
 }
 
 // global debug mode flag
-static unsigned int is_debug_mode_enabled = false;
+static Boolean is_debug_mode_enabled = false;
 
 // define global hash table and hashing method
 GetHashFn get_hash;
@@ -64,8 +57,7 @@ static void search_item() {
   printf("Item searching key: ");
   scanf("%s", &key);
 
-  GetHashFn get_hash1 = ht_get_linear_hash;
-  found = ht_search(hash_table, get_hash1, key);
+  found = ht_search(hash_table, get_hash, key, is_debug_mode_enabled);
 
   if (found != NULL) {
     printf("Item '%s' was found. It's value - %s\n", key, found);
@@ -81,7 +73,7 @@ static void delete_item() {
   printf("Item key to remove: ");
   scanf("%s", &key);
 
-  ht_delete(hash_table, get_hash, key);
+  ht_delete(hash_table, get_hash, key, is_debug_mode_enabled);
 }
 
 // SWITCH_DEBUG
@@ -101,7 +93,7 @@ static void read_file_data() {
   int count = 0;
   char key[100], value[100];
   while ((fscanf(fp, "%s %s\n", &key, &value)) != EOF) {
-    ht_upsert(hash_table, get_hash, key, value);
+    ht_upsert(hash_table, get_hash, key, value, is_debug_mode_enabled);
     count++;
   }
 
@@ -169,11 +161,10 @@ static void print_status_bar() {
 
 // program main menu display with option selection
 static void display_menu() {
-  colorise_blue();
-  printf("\u261E SELECT THE OPERATION (1-7):\n");
+  colorise_blue("\u261E SELECT THE OPERATION (1-7):\n");
 
-  colorise_green();
-  printf("\
+  char menu_formated_text[200];
+  sprintf(menu_formated_text, "\
   \u2460  Add new item\n\
   \u2461  Search an item by key\n\
   \u2462  Delete an item by key\n\
@@ -181,7 +172,8 @@ static void display_menu() {
   \u2464  Load data from file\n\
   \u2465  Change hash probing method\n\
   \u2466  Exit\n", is_debug_mode_enabled ? "Disable" : "Enable");
-  colorise_reset();
+
+  colorise_green(menu_formated_text);
 }
 
 // re-draw program screen with header and menu
@@ -196,14 +188,12 @@ static void update_screen() {
 // ask user for operation number input
 static unsigned short get_operation() {
   char str_input[20];
-  unsigned short isFailed = false;
+  Boolean isFailed = false;
 
   do {
     // show the error if failed on the previous iteration
     if (isFailed) { 
-      colorise_red();
-      printf("\nError: Incorrect input! Please, enter a single number from 1 to 6.");
-      colorise_reset();
+      colorise_red("\nError: Incorrect input! Please, enter a single number from 1 to 7.");
     }
 
     printf("\nYour choice (1-7): ");
@@ -218,7 +208,7 @@ static unsigned short get_operation() {
 
 /* main operation to start endless loop with main menu options */
 void run_program_loop() {
-  unsigned short selected_operation;
+  Boolean selected_operation;
 
   get_hash = ht_get_linear_hash;
   hash_table = ht_new();
@@ -229,56 +219,42 @@ void run_program_loop() {
     selected_operation = get_operation();
     update_screen();
 
-    colorise_blue();
-    printf("\nYour choice: %d\n\n", selected_operation);
-    colorise_reset();
+    char choice_text[50];
+    sprintf(choice_text, "\nYour choice: %d\n\n", selected_operation);
+    colorise_blue(choice_text);
 
     switch (selected_operation) {
       case ADD_ITEM:
-        colorise_yellow();
-        printf("Adding new item to hash table\n");
-        colorise_reset();
+        colorise_yellow("Adding new item to hash table\n");
         add_item();
         break;
       case SEARCH_ITEM:
-        colorise_yellow();
-        printf("Searching an item on the hash table:\n");
-        colorise_reset();
+        colorise_yellow("Searching an item on the hash table:\n");
         search_item();
         break;
       case DELETE_ITEM:
-        colorise_yellow();
-        printf("Delete an item from the hash table:\n");
-        colorise_reset();
+        colorise_yellow("Delete an item from the hash table:\n");
         delete_item();
         break;
       case SWITCH_DEBUG:
         switch_debug_mode();
-        colorise_yellow();
-        printf("Debug mode was %s.\n", is_debug_mode_enabled ? "enabled" : "disabled");
-        colorise_reset();
+        char debug_status_text[50];
+        sprintf(debug_status_text, "Debug mode was %s.\n", is_debug_mode_enabled ? "enabled" : "disabled");
+        colorise_yellow(debug_status_text);
         break;
       case LOAD_DATA:
-        colorise_yellow();
-        printf("Loading some hash table from the data file:\n");
-        colorise_reset();
+        colorise_yellow("Loading some hash table from the data file:\n");
         read_file_data();
         break;
       case CHANGE_METHOD:
-        colorise_yellow();
-        printf("Change base hash probing method (hash table will be recreated):\n");
-        colorise_reset();
+        colorise_yellow("Change base hash probing method (hash table will be recreated):\n");
         change_method();
         break;
       case EXIT:
-        colorise_yellow();
-        printf("Thanks for playing! Have a nice time!\n");
-        colorise_reset();
+        colorise_yellow("Thanks for playing! Have a nice time!\n");
         return;
       default:
-        colorise_yellow();
-        printf("Unknown operation!\n");
-        colorise_reset();
+        colorise_yellow("Unknown operation!\n");
         break;
       }
   }

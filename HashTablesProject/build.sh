@@ -7,7 +7,7 @@ if [ -f main ] ; then
 
 # Build new version
 cc hash_table.c\
-  prime.c\
+  utils.c\
   hashing_methods.c\
   cli.c\
   main.c\
