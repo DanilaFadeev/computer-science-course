@@ -11,7 +11,7 @@ To launch this program on your machine you have to run `build` bash script which
 
 Main screen looks like on a screenshort below.
 
-![Main Screen](MainScreen.png)
+<img src="./MainScreen.png" alt="Main Screen" width="600"/>
 
 ## Hash tables
 
