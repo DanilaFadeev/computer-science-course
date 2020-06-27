@@ -126,7 +126,7 @@
 - [x] [Decode A Web Page](https://www.practicepython.org/exercise/2014/06/06/17-decode-a-web-page.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [x] [Cows And Bulls](https://www.practicepython.org/exercise/2014/07/05/18-cows-and-bulls.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [Decode A Web Page Two](https://www.practicepython.org/exercise/2014/07/14/19-decode-a-web-page-two.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
-- [ ] [Element Search](https://www.practicepython.org/exercise/2014/11/11/20-element-search.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
+- [x] [Element Search](https://www.practicepython.org/exercise/2014/11/11/20-element-search.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [Write To A File](https://www.practicepython.org/exercise/2014/11/30/21-write-to-a-file.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [Read From File](https://www.practicepython.org/exercise/2014/12/06/22-read-from-file.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
 - [ ] [File Overlap](https://www.practicepython.org/exercise/2014/12/14/23-file-overlap.html) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png) ![chili](https://www.practicepython.org/assets/img/chili-liz-20x20.png)
@@ -145,4 +145,5 @@
 
 - [ ] [The C Programming Language](https://www.amazon.com/Programming-Language-2nd-Brian-Kernighan/dp/0131103628) (Book)
   The C Programming Language (sometimes termed K&R, after its authors' initials) is a computer programming book written by Brian Kernighan and Dennis Ritchie, the latter of whom originally designed and implemented the language, as well as co-designed the Unix operating system with which development of the language was closely intertwined.
-![](https://pbs.twimg.com/profile_images/3388137225/0100cab748a16b65f3c85d16ad7eaf50.jpeg)
+
+  ![](https://pbs.twimg.com/profile_images/3388137225/0100cab748a16b65f3c85d16ad7eaf50.jpeg)
