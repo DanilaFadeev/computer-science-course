@@ -1,0 +1,9 @@
+This is text file.
+Have to comapre
+With the other one
+For not it should be okey
+And here to
+But
+We have error string here
+So
+Files are not the same!

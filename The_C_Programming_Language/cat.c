@@ -16,12 +16,17 @@ int main(int argc, const char* argv[]) {
 
   while (--argc > 0) {
     if ((fp = fopen(*++argv, "r")) == NULL) {
-      printf("Error during opening file %s\n", *argv);
-      return 1;
+      fprintf(stderr, "Error during opening file %s\n", *argv);
+      exit(1);
     }
     filecopy(fp, stdout);
     fclose(fp);
   }
 
-  return 0;
+  if (ferror(stdout)) {
+    fprintf(stderr, "Error writing stdout");
+    exit(2);
+  }
+
+  exit(0);
 }
