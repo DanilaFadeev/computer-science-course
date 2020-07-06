@@ -34,5 +34,12 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  // A little cleanup
+  fclose(f1);
+  fclose(f1);
+
+  free(buf1);
+  free(buf2);
+
   return 0;
 }
